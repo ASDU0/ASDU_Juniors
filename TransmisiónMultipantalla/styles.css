@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    background: #110e39;
+    color: #d1a9a9;
+}
+
+h1 {
+    text-align: center;
+}
+.contenedor {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+    gap: 10px;
+}
+
+.team{
+    display: flex;
+    flex-direction: column;
+}
+.nombre {
+    color: #baa3a3;
+    text-align: center;
+}
+.tematica {
+    display: flex;
+    background-color: #252342;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 30px;
+    border: 2px solid #9b90ce;
+    gap: 20px;
+}
+.pantalla {
+    background: #333131;
+    border: 2px solid #9b90ce;
+
+    height: 200px;
+    width: 300px;
+    font-size: 20px;
+    color: #574545;
+}
