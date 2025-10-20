@@ -1,0 +1,144 @@
+
+import sys
+from PyQt6.QtWidgets import (
+    QApplication, QMainWindow, QPushButton, QWidget, QVBoxLayout,
+    QLabel, QMessageBox, QFileDialog, QColorDialog, QDialog, QDialogButtonBox
+)
+from PyQt6.QtGui import QColor
+
+
+#Ventana secundaria personalizada
+class VentanaSecundaria(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Ventana Secundaria")
+        self.setGeometry(300, 200, 300, 200)
+
+        layout = QVBoxLayout()
+        layout.addWidget(QLabel("👋 Hola, soy una ventana secundaria"))
+        self.setLayout(layout)
+
+
+# Dialogo personalizado modal
+class DialogoPersonalizado(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Diálogo Personalizado")
+        self.setGeometry(350, 250, 300, 150)
+
+        layout = QVBoxLayout()
+        layout.addWidget(QLabel("¿Quieres continuar con la acción?"))
+
+        botones = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
+        botones.accepted.connect(self.accept)
+        botones.rejected.connect(self.reject)
+
+        layout.addWidget(botones)
+        self.setLayout(layout)
+
+
+#Ventana principal con menú de ejemplos
+class VentanaPrincipal(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("🎯 Ejemplos de Ventanas y Diálogos - PyQt6")
+        self.setGeometry(100, 100, 400, 400)
+
+        layout = QVBoxLayout()
+
+        # Botón 1 - Ventana secundaria
+        btn_secundaria = QPushButton("Abrir Ventana Secundaria")
+        btn_secundaria.clicked.connect(self.abrir_ventana_secundaria)
+        layout.addWidget(btn_secundaria)
+
+        # Botón 2 - QMessageBox
+        btn_msg = QPushButton("Mostrar QMessageBox")
+        btn_msg.clicked.connect(self.mostrar_mensaje)
+        layout.addWidget(btn_msg)
+
+        # Botón 3 - QFileDialog
+        btn_file = QPushButton("Abrir QFileDialog")
+        btn_file.clicked.connect(self.abrir_archivo)
+        layout.addWidget(btn_file)
+
+        # Botón 4 - QColorDialog
+        btn_color = QPushButton("Abrir QColorDialog")
+        btn_color.clicked.connect(self.abrir_selector_color)
+        layout.addWidget(btn_color)
+
+        # Botón 5 - QDialog personalizado
+        btn_dialogo = QPushButton("Abrir Diálogo Personalizado")
+        btn_dialogo.clicked.connect(self.abrir_dialogo_personalizado)
+        layout.addWidget(btn_dialogo)
+
+        # Label de estado
+        self.label_estado = QLabel("Selecciona una opción")
+        self.label_estado.setStyleSheet("font-weight: bold; margin-top: 10px;")
+        layout.addWidget(self.label_estado)
+
+        # Contenedor principal
+        contenedor = QWidget()
+        contenedor.setLayout(layout)
+        self.setCentralWidget(contenedor)
+
+    #Abrir ventana secundaria
+    def abrir_ventana_secundaria(self):
+        self.ventana_secundaria = VentanaSecundaria()
+        self.ventana_secundaria.show()
+        self.label_estado.setText("Ventana secundaria abierta")
+
+    #QMessageBox
+    def mostrar_mensaje(self):
+        msg = QMessageBox(self)
+        msg.setWindowTitle("Mensaje")
+        msg.setText("Esto es un QMessageBox de información")
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
+        respuesta = msg.exec()
+
+        if respuesta == QMessageBox.StandardButton.Ok:
+            self.label_estado.setText("Presionaste OK")
+        else:
+            self.label_estado.setText("Presionaste Cancel")
+
+    #QFileDialog
+    def abrir_archivo(self):
+        ruta_archivo, _ = QFileDialog.getOpenFileName(
+            self,
+            "Seleccionar archivo",
+            "",
+            "Archivos de texto (*.txt);;Todos los archivos (*)"
+        )
+        if ruta_archivo:
+            self.label_estado.setText(f"📄 Archivo:\n{ruta_archivo}")
+            print("Archivo seleccionado:", ruta_archivo)
+        else:
+            self.label_estado.setText("⚠️ No seleccionaste ningún archivo")
+
+    #QColorDialog
+    def abrir_selector_color(self):
+        color = QColorDialog.getColor(QColor("white"), self, "Seleccionar color")
+        if color.isValid():
+            self.label_estado.setText(f"🎨 Color elegido: {color.name()}")
+            self.label_estado.setStyleSheet(f"background-color: {color.name()}; font-weight: bold;")
+        else:
+            self.label_estado.setText("⚠️ No seleccionaste ningún color")
+
+    #Diálogo personalizado
+    def abrir_dialogo_personalizado(self):
+        dialogo = DialogoPersonalizado()
+        resultado = dialogo.exec()
+
+        if resultado == QDialog.DialogCode.Accepted:
+            self.label_estado.setText("Aceptaste en el diálogo personalizado")
+        else:
+            self.label_estado.setText("Cancelaste el diálogo personalizado")
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    ventana = VentanaPrincipal()
+    ventana.show()
+    sys.exit(app.exec())
