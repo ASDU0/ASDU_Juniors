@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mood Recommender</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>¿Cómo te sientes hoy?</h1>
+
+<div class="moods">
+<button class="mood-btn" data-mood="feliz">:) Feliz</button>
+<button class="mood-btn" data-mood="triste">:( Triste</button>
+<button class="mood-btn" data-mood="energetico">:D Energético</button>
+<button class="mood-btn" data-mood="nostalgico">:') Nostálgico</button>
+<button class="mood-btn" data-mood="relajado">u_u Relajado</button>
+</div>
+
+<div id="location-info" class="hidden"></div>
+
+<div id="loader" class="hidden">Cargando...</div>
+<div id="error-message" class="hidden"></div>
+
+<div id="dashboard"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
